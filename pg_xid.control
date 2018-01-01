@@ -1,0 +1,4 @@
+comment = 'pg_xid'
+default_version = '1.0'
+
+relocatable = true
