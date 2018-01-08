@@ -8,6 +8,9 @@
 
 #include "xid.h"
 
+/* Custom Base32 */
+static const char * encoding = "0123456789abcdefghijklmnopqrstuv";
+
 /* Global ID Counter */
 static uint32_t id_counter;
 static pid_t pid;
@@ -65,6 +68,40 @@ xid_generate() {
 	id[11] = (unsigned char)(id_counter);
 	
 	memcpy(result, &id, XID_RAW_LEN);
+
+	return result;
+}
+
+/* Generate ID */
+extern unsigned char * 
+xid_encode(unsigned char * id) {
+	unsigned char dst[XID_ENCODED_LEN];
+	unsigned char * result;
+
+	result = malloc(XID_ENCODED_LEN);
+
+	dst[0] = encoding[ id[0]>>3 ];
+	dst[1] = encoding[ ((id[1]>>6) & 0x1F) | ((id[0]<<2) & 0x1F) ];
+	dst[2] = encoding[ (id[1]>>1) & 0x1F];
+	dst[3] = encoding[ ((id[2]>>4) & 0x1F) | ((id[1]<<4) & 0x1F) ];
+	dst[4] = encoding[ id[3]>>7 | ((id[2]<<1) & 0x1F) ];
+	dst[5] = encoding[ (id[3]>>2) & 0x1F ];
+	dst[6] = encoding[ id[4]>>5 | ((id[3]<<3) & 0x1F) ];
+	dst[7] = encoding[ id[4] & 0x1F ];
+	dst[8] = encoding[ id[5]>>3 ];
+	dst[9] = encoding[ ((id[6]>>6) & 0x1F) | ((id[5]<<2) & 0x1F) ];
+	dst[10] = encoding[ (id[6]>>1) & 0x1F ];
+	dst[11] = encoding[ ((id[7]>>4) & 0x1F) | ((id[6]<<4) & 0x1F) ];
+	dst[12] = encoding[ id[8]>>7 | ((id[7]<<1) & 0x1F) ];
+	dst[13] = encoding[ (id[8]>>2) & 0x1F];
+	dst[14] = encoding[ (id[9]>>5) | ((id[8]<<3) & 0x1F) ];
+	dst[15] = encoding[ id[9] & 0x1F ];
+	dst[16] = encoding[ id[10]>>3 ];
+	dst[17] = encoding[ ((id[11]>>6) & 0x1F) | ((id[10]<<2) & 0x1F) ];
+	dst[18] = encoding[ (id[11]>>1) & 0x1F ];
+	dst[19] = encoding[ (id[11]<<4) & 0x1F ];
+
+	memcpy(result, &dst, XID_ENCODED_LEN);
 
 	return result;
 }

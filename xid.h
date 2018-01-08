@@ -12,6 +12,7 @@
 /* constants */
 #define XID_HOSTNAME_MAX 30
 #define XID_RAW_LEN 12
+#define XID_ENCODED_LEN 20
 
 /* exported function definitions */
 extern void
@@ -19,5 +20,8 @@ xid_init(void);
 
 extern unsigned char *
 xid_generate(void);
+
+extern unsigned char * 
+xid_encode(unsigned char * id);
 
 #endif

@@ -4,3 +4,6 @@
 -- v1
 CREATE OR REPLACE FUNCTION xid() RETURNS BYTEA
   AS 'pg_xid', 'xid' LANGUAGE C;
+
+CREATE OR REPLACE FUNCTION xid_encoded() RETURNS TEXT
+  AS 'pg_xid', 'xid_encoded' LANGUAGE C;
