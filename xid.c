@@ -5,7 +5,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <openssl/md5.h>
-
+#include "postgres.h"
 #include "xid.h"
 
 /* Custom Base32 */
@@ -22,13 +22,24 @@ swap_endian(uint32_t val) {
 	return (val<<24) | ((val<<8) & 0x00ff0000) | ((val>>8) & 0x0000ff00) | (val>>24);
 }
 
+unsigned int random_unsigned_int(void)
+{
+  unsigned int r;
+  if (!pg_strong_random(&r, sizeof(r)))
+  {
+    elog(ERROR, "pg_xid: pg_strong_random failed!");
+    return 0;
+  }
+  return r;
+}
+
 extern void
 xid_init() {
 	char name[XID_HOSTNAME_MAX];
 	unsigned char * name_md5;
 
 	name_md5 = malloc(MD5_DIGEST_LENGTH);
-	id_counter = arc4random();
+	id_counter = random_unsigned_int();
 
 	// Hostname md5
 	gethostname((char*)name, XID_HOSTNAME_MAX);
