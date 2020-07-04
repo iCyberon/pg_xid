@@ -27,7 +27,7 @@ unsigned int random_unsigned_int(void)
   unsigned int r;
   if (!pg_strong_random(&r, sizeof(r)))
   {
-    elog(ERROR, "tuid_generate: pg_strong_random failed!");
+    elog(ERROR, "pg_xid: pg_strong_random failed!");
     return 0;
   }
   return r;
