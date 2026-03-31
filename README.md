@@ -21,7 +21,7 @@ is required so it can be used directly.
 |-------------|-------------|----------------
 | [UUID]      | 16 bytes    | configuration free, not sortable
 | [shortuuid] | 16 bytes    | configuration free, not sortable
-| [Snowflake] | 8 bytes     | needs machin/DC configuration, needs central server, sortable
+| [Snowflake] | 8 bytes     | needs machine/DC configuration, needs central server, sortable
 | [MongoID]   | 12 bytes    | configuration free, sortable
 | xid         | 12 bytes    | configuration free, sortable
 
